@@ -19,12 +19,16 @@ def call(){
                     switch(params.compileTool)
                       {
                           case 'Maven':
-                              def ejecucion = load 'maven.groovy'
-                              ejecucion.call()
+                              //compilar maven
+                              //def ejecucion = load 'maven.groovy'
+                              //ejecucion.call()
+                              maven.call()
                           break;
                           case 'Gradle':
-                              def ejecucion = load 'gradle.groovy'
-                              ejecucion.call()
+                              //compilar gradle
+                              //def ejecucion = load 'gradle.groovy'
+                              //ejecucion.call()
+                              gradle.call()
                           break;
                       }
                   }
