@@ -34,18 +34,18 @@ def call(stages){
 }
 
 def stageCleanBuildTest(){
-    env.DESCRTIPTION_STAGE = 'Paso 1: Build - Test'
-    stage("${env.DESCRTIPTION_STAGE}"){
-        env.STAGE = "build - ${env.DESCRTIPTION_STAGE}"
+    env.TAREA = 'Paso 1: Build - Test'
+    stage("${env.TAREA}"){
+        env.STAGE = "build - ${env.TAREA}"
         sh "echo  ${env.STAGE}"
         sh "gradle clean build"
     }
 }
 
 def stageSonar(){
-    env.DESCRTIPTION_STAGE = "Paso 2: Sonar - Análisis Estático"
-    stage("${env.DESCRTIPTION_STAGE}"){
-        env.STAGE = "sonar - ${DESCRTIPTION_STAGE}"
+    env.TAREA = "Paso 2: Sonar - Análisis Estático"
+    stage("${env.TAREA}"){
+        env.STAGE = "sonar - ${TAREA}"
         withSonarQubeEnv('sonarqube') {
             sh "echo  ${env.STAGE}"
             sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=ejemplo-gradle -Dsonar.java.binaries=build'
@@ -54,9 +54,9 @@ def stageSonar(){
 }
 
 def stageRunSpringCurl(){
-    env.DESCRTIPTION_STAGE = "Paso 3: Curl Springboot Gralde sleep 80"
-    stage("${env.DESCRTIPTION_STAGE}"){
-        env.STAGE = "run_spring_curl - ${DESCRTIPTION_STAGE}"
+    env.TAREA = "Paso 3: Curl Springboot Gralde sleep 80"
+    stage("${env.TAREA}"){
+        env.STAGE = "run_spring_curl - ${TAREA}"
         sh "echo  ${env.STAGE}"
         sh "gradle bootRun&"
         sh "sleep 80 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
@@ -65,8 +65,8 @@ def stageRunSpringCurl(){
 
 
 def stageUploadNexus(){
-    env.DESCRTIPTION_STAGE = "Paso 4: Subir Nexus"
-    stage("${env.DESCRTIPTION_STAGE}"){
+    env.TAREA = "Paso 4: Subir Nexus"
+    stage("${env.TAREA}"){
         nexusPublisher nexusInstanceId: 'nexus',
         nexusRepositoryId: 'devops-usach-nexus',
         packages: [
@@ -85,33 +85,33 @@ def stageUploadNexus(){
                 ]
             ]
         ]
-        env.STAGE = "upload_nexus - ${DESCRTIPTION_STAGE}"
+        env.STAGE = "upload_nexus - ${TAREA}"
         sh "echo  ${env.STAGE}"
     }
 }
 
 def stageDownloadNexus(){
-    env.DESCRTIPTION_STAGE = "Paso 5: Descargar Nexus"
-   stage("${env.DESCRTIPTION_STAGE}"){
-        env.STAGE = "download_nexus - ${DESCRTIPTION_STAGE}"
+    env.TAREA = "Paso 5: Descargar Nexus"
+   stage("${env.TAREA}"){
+        env.STAGE = "download_nexus - ${TAREA}"
         sh "echo  ${env.STAGE}"
         sh ' curl -X GET -u $NEXUS_USER:$NEXUS_PASSWORD "http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar" -O'
     }
 }
 
 def stageRunJar(){
-    env.DESCRTIPTION_STAGE = "Paso 6: Levantar Artefacto Jar"
-    stage("${env.DESCRTIPTION_STAGE}"){
-        env.STAGE = "run_jar - ${DESCRTIPTION_STAGE}"
+    env.TAREA = "Paso 6: Levantar Artefacto Jar"
+    stage("${env.TAREA}"){
+        env.STAGE = "run_jar - ${TAREA}"
         sh "echo  ${env.STAGE}"
         sh 'nohup bash java -jar DevOpsUsach2020-0.0.1.jar & >/dev/null'
     }
 }
 
 def stageCurlJar(){
-    env.DESCRTIPTION_STAGE = "Paso 7: Testear Artefacto - Dormir Esperar 20sg "
-    stage("${env.DESCRTIPTION_STAGE}"){
-        env.STAGE = "curl_jar - ${DESCRTIPTION_STAGE}"
+    env.TAREA = "Paso 7: Testear Artefacto - Dormir Esperar 20sg "
+    stage("${env.TAREA}"){
+        env.STAGE = "curl_jar - ${TAREA}"
         sh "echo  ${env.STAGE}"
         sh "sleep 20 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
     }
